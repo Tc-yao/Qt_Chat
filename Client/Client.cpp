@@ -72,6 +72,11 @@ void Client::soltSendMessage()
 }
 void Client::handle_packet()
 {
-	QMessageBox::critical(NULL, QString::fromLocal8Bit("biaoti"), ui.lineEdit_2->text(),
-		QMessageBox::Ok);
+// 	QMessageBox::critical(NULL, QString::fromLocal8Bit("biaoti"), ui.lineEdit_2->text(),
+// 		QMessageBox::Ok);
+	chat_message msg = client_->get_message();
+	char szText[chat_message::max_body_length_ + 1] = { 0 };
+	memcpy(szText, msg.body(), msg.body_length());
+	ui.textEdit->append(QString::fromLocal8Bit(szText));
+
 }

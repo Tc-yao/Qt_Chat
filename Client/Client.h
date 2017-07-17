@@ -1,7 +1,5 @@
 #pragma once
-#ifdef WIN32
-#define _WIN32_WINNT 0x0501
-#endif // WIN32
+
 #include <QtWidgets/QMainWindow>
 #include "ui_Client.h"
 #include "chat_client.hpp"

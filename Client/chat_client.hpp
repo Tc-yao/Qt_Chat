@@ -1,5 +1,7 @@
 #pragma once
-
+#ifdef WIN32
+#define _WIN32_WINNT 0x0501
+#endif // WIN32
 #include <iostream>
 #include <queue>
 #include <thread>
@@ -26,6 +28,7 @@ private:
 	chat_message read_msg_;
 
 	chat_message_queue write_msgs_;
+	std::vector<chat_message> recv_msgs_;
 public:
 	chat_client(io_service& ioservice, tcp::resolver::iterator endpoint_iterator)
 		:io_service_(ioservice)
@@ -54,9 +57,16 @@ public:
 	}
 	void handle_message(void)
 	{
+		recv_msgs_.push_back(read_msg_);
 		emit received_packet();
 	}
-	void read_handle_body(const error_code& error)
+	chat_message get_message(void)
+	{
+		chat_message m = recv_msgs_[0];
+		recv_msgs_.erase(recv_msgs_.begin());
+		return m;
+	}
+		void read_handle_body(const error_code& error)
 	{
 		if (!error)
 		{
